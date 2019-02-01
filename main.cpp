@@ -1,24 +1,37 @@
 #include <iostream>
 #include "cpp.h"
 #include <string.h>
+
 using namespace std;
-void Bob(); // Another process
+
+
+facility *barber;
+
+void Generate(); // Another process
+void Customer(); // Another process
+
 extern "C" void sim() // Alice is the main process
 {
-int i;
-create("Alice"); // Alice separates from background system
-Bob(); // Alice gives Bob a chance to do the same
-for(i=1;i<10;i++)
-{
-cout << "Alice says hello " << i << " times." << endl;
+	line = new facility("line");
+	
+	create("sim"); 
+	Generate(); 
+	
+	hold(480);
 }
-}
-void Bob()
+void Generate()
 {
-int i;
-create("Bob");
-for(i=1;i<10;i++)
-{
-cout << "Bob says hello " << i << " times." << endl;
+	create("Generate");
+	
+	while(1){
+		Customer();
+		hold(uniform(12, 24));
+	}
 }
+
+void Customer()
+{
+	create("Customer");
+	barber.use(uniform(12, 20));
+	
 }
