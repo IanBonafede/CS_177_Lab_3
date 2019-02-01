@@ -18,6 +18,7 @@ extern "C" void sim() // Alice is the main process
 	Generate(); 
 	
 	hold(480);
+	report();
 }
 void Generate()
 {
