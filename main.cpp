@@ -12,7 +12,7 @@ void Customer(); // Another process
 
 extern "C" void sim() // Alice is the main process
 {
-	line = new facility("line");
+	barber = new facility("Joe the Barber");
 	
 	create("sim"); 
 	Generate(); 
@@ -32,6 +32,6 @@ void Generate()
 void Customer()
 {
 	create("Customer");
-	barber.use(uniform(12, 20));
+	barber->use(uniform(12, 20));
 	
 }
