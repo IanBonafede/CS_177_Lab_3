@@ -12,7 +12,7 @@ void Customer(); // Another process
 
 extern "C" void sim() // Alice is the main process
 {
-	barber = new facility("Joe the Barber");
+	barber = new facility("Joe");
 	
 	create("sim"); 
 	Generate(); 
