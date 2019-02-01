@@ -1,8 +1,6 @@
 all: main
 
 main:
-	g++ --std=c++11 -DCPP -DGPP -I/usr/csshare/pkgs/csim cpp-19.0/lib -m32
+	gg++ --std=c++11 -DCPP -DGPP -I/ibona001/csshare/pkgs/csim_cpp-19.0/lib -m32 /ibona001/csshare/pkgs/csim_cpp-19.0/lib/csim.cpp.a -lm -o main main.cpp
 	
 
-clean:
-	rm -rf *.exe
