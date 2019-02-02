@@ -229,7 +229,7 @@ void Car()
 {
 	create("Car");
 	double litresNeeded = uniform(10, 60);
-	int len = pumps->qlegnth();
+	int len = pumps->qlength();
 	stats->countArrival();
 	if(DoesCarBalk(litresNeeded, len)) {
 		stats->accumBalk(litresNeeded);
