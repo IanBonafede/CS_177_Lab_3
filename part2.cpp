@@ -160,10 +160,10 @@ void statsClass::snapshot ()
 	
 	printf ("%7i", balkingCustomers);
 	
-	if (customersServed > 0)
+	/*if (customersServed > 0)
 		printf ("%9.3f", TotalWaitingTime / customersServed);
 	else
-		printf ("%9s", "Unknown");
+		printf ("%9s", "Unknown");*/
 	
 	printf ("%7.3f", TotalServiceTime / (numPumps * simulationTime));
 	
@@ -204,11 +204,11 @@ extern "C" void sim() // Alice is the main process
 	
 	
 	
-	printf ("%9s%7s%8s%9s%8s%7s%9s%7s%8s%7s\n", " Current", "Total ",
-		"NoQueue", "Car->Car", "Average", "Number", "Average", "Pump ",
+	printf ("%9s%7s%9s%8s%7s%7s%8s%7s\n", " Current", "Total ",
+		"Car->Car", "Average", "Number", "Pump ",
 		"Total", " Lost ");
-	printf ("%9s%7s%8s%9s%8s%7s%9s%7s%8s%7s\n", "   Time ", "Cars ",
-		"Fraction", "  Time  ", " Litres ", "Balked", "  Wait ",
+	printf ("%9s%7s%9s%8s%7s%7s%8s%7s\n", "   Time ", "Cars ",
+		"  Time  ", " Litres ", "Balked",
 		"Usage ", "Profit", "Profit");
 	for (int i = 0; i < 79; i++)
 		cout << "-";
@@ -228,17 +228,18 @@ extern "C" void sim() // Alice is the main process
 
 void Generate()
 {	
-	simulationTime = 0;	
+	simulationTime = 0;
+	int lastTime = 0;	
 	
 	create("Generate");
 	
 	while(1){
 		Car();
 		
-		if(simulationTime % snapshotInterval == 0) {
+		if(simulationTime - lastTime >= snapshotInterval) {
 			stats->snapshot();
 		}
-		
+		lastTime = simulationTime;
 		double nextTime = interarrivalTime();
 		hold(nextTime);
 		simulationTime += nextTime;
