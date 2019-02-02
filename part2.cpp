@@ -229,20 +229,22 @@ extern "C" void sim() // Alice is the main process
 void Generate()
 {	
 	simulationTime = 0;
-	int lastTime = 0;	
+	double nextTime = simulationTime + interarrivalTime();
 	
 	create("Generate");
 	
 	while(1){
-		Car();
 		
-		if(simulationTime - lastTime >= snapshotInterval) {
+		if(simulationTime == nextTime) {
+			Car();
+			nextTime = simulationTime + interarrivalTime();
+		}
+		
+		if(simulationTime % snapshotInterval == 0) {
 			stats->snapshot();
 		}
-		lastTime = simulationTime;
-		double nextTime = interarrivalTime();
-		hold(nextTime);
-		simulationTime += nextTime;
+		
+		simulationTime++;
 	}
 }
 
