@@ -1,6 +1,7 @@
 #include <iostream>
 #include "cpp.h"
 #include <string.h>
+#include <math.h>       /* log */
 
 using namespace std;
 
@@ -146,7 +147,7 @@ void statsClass::accumBalk (double litres)
 
 void statsClass::snapshot ()
 {
-	printf("%8.0f%7i", simulationTime, TotalArrivals);
+	/*printf("%8.0f%7i", simulationTime, TotalArrivals);
 	printf("%8.3f", carQueue -> emptyTime()/simulationTime);
 	if (TotalArrivals > 0) {
 		printf("%9.3f%8.3f", simulationTime/TotalArrivals,
@@ -154,16 +155,16 @@ void statsClass::snapshot ()
 	}
 	else
 		printf ("%9s%8s", "Unknown", "Unknown");
-
+	*/
 	printf ("%7i", balkingCustomers);
-	if (customersServed > 0)
+	/*if (customersServed > 0)
 		printf ("%9.3f", TotalWaitingTime / customersServed);
 	else
 		printf ("%9s", "Unknown");
 	printf ("%7.3f", TotalServiceTime
 		/ (pumpStand -> howManyPumps() * simulationTime));
 	printf ("%9.2f", TotalLitresSold * profit
-		- cost * pumpStand -> howManyPumps());
+		- cost * pumpStand -> howManyPumps());*/
 	printf ("%7.2f\n", TotalLitresMissed * profit);
 }
 
