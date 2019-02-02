@@ -30,7 +30,7 @@ double interarrivalTime ()
 {
 	
 	// seconds, because r is a rate in 1/sec, and this is 1/r
-	return - MEAN * log (uniform(0, 1));
+	return - MEAN * log (((double) rand())/((double) RAND_MAX));
 }
 
 
@@ -263,7 +263,7 @@ void Car()
 {
 	create("Car");
 
-	double litresNeeded = uniform(10, 60);
+	double litresNeeded = 10 + 50*((double) rand())/((double) RAND_MAX);
 	int len = pumps->qlength();
 	
 	if(DoesCarBalk(litresNeeded, len)) {
