@@ -10,7 +10,7 @@ using namespace std;
 const double profit = .025; // dollars per litre
 const double cost = 20;
 const int MEAN = 50;
-int snapshotInterval, numPumps, totalTime, simulationTime = 0;
+int snapshotInterval, numPumps, totalTime, simulationTime, seed = 0;
 
 facility_ms *pumps;
 
@@ -199,9 +199,13 @@ extern "C" void sim() // Alice is the main process
 	cin >> totalTime;
 	cout << "Enter Snapshot Interval: ";
 	cin >> snapshotInterval;
+	cout << "Enter Seed: ";
+	cin >> seed;
 	
 	pumps = new facility_ms("pumps", numPumps);
 	stats = new statsClass;
+	
+	reseed (NIL, seed);
 	
 	create("sim"); 
 	
@@ -221,6 +225,7 @@ extern "C" void sim() // Alice is the main process
 	Generate(); 
 	
 	hold(totalTime);
+	cout << endl;
 	report();
 }
 
