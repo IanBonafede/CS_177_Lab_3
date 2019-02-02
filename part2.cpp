@@ -189,9 +189,8 @@ extern "C" void sim() // Alice is the main process
 	int numP, numT;
 	cout << "Enter Pumps: ";
 	cin >> numP;
-	cout << endl << "Enter Time: ";
+	cout << "Enter Time: ";
 	cin >> numT;
-	cout << endl;
 	
 	pumps = new facility_ms("pumps", numP);
 	stats = new statsClass;
@@ -239,7 +238,8 @@ void Car()
 		
 		stats->accumSale(litresNeeded);
 		stats->accumServiceTime(serviceTime(litresNeeded));
-		
+		hold(serviceTime(litresNeeded));		
+
 		pumps->release();
 	}
 	
