@@ -193,7 +193,7 @@ extern "C" void sim() // Alice is the main process
 	cin >> numT;
 	cout << endl;
 	
-	pumps = new facility_set("pumps", numP);
+	pumps = new facility_ms("pumps", numP);
 	stats = new statsClass;
 	
 	create("sim"); 
