@@ -9,7 +9,7 @@ using namespace std;
 const double profit = .025; // dollars per litre
 const double cost = 20;
 const int MEAN = 50;
-int snapshotInterval, numPumps, totalTime, simulationTime;
+int snapshotInterval, numPumps, totalTime, simulationTime = 0;
 
 facility_ms *pumps;
 
@@ -205,7 +205,7 @@ extern "C" void sim() // Alice is the main process
 	
 	
 	printf ("%9s%7s%9s%8s%7s%7s%8s%7s\n", " Current", "Total ",
-		"Car->Car", "Average", "Number", "Pump ",
+		"  Car", "Average", "Number", "Pump ",
 		"Total", " Lost ");
 	printf ("%9s%7s%9s%8s%7s%7s%8s%7s\n", "   Time ", "Cars ",
 		"  Time  ", " Litres ", "Balked",
