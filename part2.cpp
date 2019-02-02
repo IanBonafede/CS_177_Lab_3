@@ -153,7 +153,7 @@ void statsClass::snapshot ()
 	printf("%8d%7d", simulationTime, TotalArrivals);
 	//printf("%8.3f", carQueue -> emptyTime()/simulationTime);
 	if (TotalArrivals > 0 && simulationTime > 0) {
-		printf("%9.3f%8.3f", simulationTime/TotalArrivals,
+		printf("%9.3f%8.3f", ((double)simulationTime)/TotalArrivals,
 			(TotalLitresSold + TotalLitresMissed) / TotalArrivals);
 	}
 	else
