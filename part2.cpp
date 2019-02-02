@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdio.h>
 #include "cpp.h"
 #include <string.h>
 #include <math.h>       /* log */
