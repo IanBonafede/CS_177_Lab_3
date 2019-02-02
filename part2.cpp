@@ -122,7 +122,7 @@ public:
 	void snapshot ();
 };
 
-statsClass * stats;
+statsClass *stats;
 
 statsClass::statsClass ()
 {
@@ -151,7 +151,7 @@ void statsClass::snapshot ()
 {
 	printf("%8.0f%7i", simulationTime, TotalArrivals);
 	//printf("%8.3f", carQueue -> emptyTime()/simulationTime);
-	if (TotalArrivals > 0) {
+	if (TotalArrivals > 0 && simulationTime > 0) {
 		printf("%9.3f%8.3f", simulationTime/TotalArrivals,
 			(TotalLitresSold + TotalLitresMissed) / TotalArrivals);
 	}
@@ -164,8 +164,10 @@ void statsClass::snapshot ()
 		printf ("%9.3f", TotalWaitingTime / customersServed);
 	else
 		printf ("%9s", "Unknown");*/
-	
-	printf ("%7.3f", TotalServiceTime / (numPumps * simulationTime));
+	if(simulationTime > 0)
+		printf ("%7.3f", TotalServiceTime / (numPumps * simulationTime));
+	else
+		printf ("%7.3s", "Unknown");
 	
 	printf ("%9.2f", TotalLitresSold * profit - cost * numPumps);
 	
@@ -204,8 +206,8 @@ extern "C" void sim() // Alice is the main process
 	
 	
 	
-	printf ("%9s%7s%9s%8s%7s%7s%8s%7s\n", " Current", "Total ",
-		"  Car", "Average", "Number", "Pump ",
+	printf ("%9s%7s%7s%8s%7s%7s%8s%7s\n", " Current", "Total ",
+		"Car", "Average", "Number", "Pump ",
 		"Total", " Lost ");
 	printf ("%9s%7s%9s%8s%7s%7s%8s%7s\n", "   Time ", "Cars ",
 		"  Time  ", " Litres ", "Balked",
@@ -236,6 +238,7 @@ void Generate()
 	while(1){
 		
 		if(simulationTime == nextTime) {
+			stats->countArrival();
 			Car();
 			nextTime = simulationTime + interarrivalTime();
 		}
@@ -261,7 +264,7 @@ void Car()
 
 	double litresNeeded = uniform(10, 60);
 	int len = pumps->qlength();
-	stats->countArrival();
+	
 	if(DoesCarBalk(litresNeeded, len)) {
 		stats->accumBalk(litresNeeded);
 	}
