@@ -229,7 +229,7 @@ extern "C" void sim() // Alice is the main process
 void Generate()
 {	
 	simulationTime = 0;
-	double nextTime = simulationTime + interarrivalTime();
+	int nextTime = simulationTime + interarrivalTime();
 	
 	create("Generate");
 	
