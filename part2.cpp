@@ -3,6 +3,7 @@
 #include "cpp.h"
 #include <string.h>
 #include <math.h>       /* log */
+#include <stdlib.h>
 
 using namespace std;
 
@@ -56,7 +57,7 @@ bool DoesCarBalk (double litres, int queueLength)
 // (2) otherwise, the probability of *not* balking is
 //       (40 + litres)/(25 * (3 + queueLength))
 {
-	return queueLength > 0 && uniform(0, 1)
+	return queueLength > 0 && ((double) rand())/((double) RAND_MAX)
 		> (40 + litres) / (25 * (3 + queueLength));
 }
 //---------------------------------------------------------------------------------
@@ -88,7 +89,7 @@ double serviceTime(double litresNeeded)
 	double howLong = -6;
 
 	for (int i = 1; i <= 12; i++)
-		howLong += uniform(0, 1);
+		howLong += ((double) rand())/((double) RAND_MAX);
 
 	return 150 + 0.5 * litresNeeded + 30 * howLong;
 }
