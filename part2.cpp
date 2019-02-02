@@ -188,7 +188,7 @@ extern "C" void sim() // Alice is the main process
 {	
 	int numP, numT;
 	cout << "Enter Pumps: ";
-	cin << numP;
+	cin >> numP;
 	cout << endl << "Enter Time: ";
 	cin >> numT;
 	cout << endl;
