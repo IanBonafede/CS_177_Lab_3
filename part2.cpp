@@ -9,6 +9,7 @@ using namespace std;
 const double profit = .025; // dollars per litre
 const double cost = 20;
 const int MEAN = 50;
+int snapshotInterval, numPumps, totalTime;
 
 facility_ms *pumps;
 
@@ -148,24 +149,26 @@ void statsClass::accumBalk (double litres)
 
 void statsClass::snapshot ()
 {
-	/*printf("%8.0f%7i", simulationTime, TotalArrivals);
-	printf("%8.3f", carQueue -> emptyTime()/simulationTime);
+	printf("%8.0f%7i", simulationTime, TotalArrivals);
+	//printf("%8.3f", carQueue -> emptyTime()/simulationTime);
 	if (TotalArrivals > 0) {
 		printf("%9.3f%8.3f", simulationTime/TotalArrivals,
 			(TotalLitresSold + TotalLitresMissed) / TotalArrivals);
 	}
 	else
 		printf ("%9s%8s", "Unknown", "Unknown");
-	*/
+	
 	printf ("%7i", balkingCustomers);
-	/*if (customersServed > 0)
+	
+	if (customersServed > 0)
 		printf ("%9.3f", TotalWaitingTime / customersServed);
 	else
 		printf ("%9s", "Unknown");
-	printf ("%7.3f", TotalServiceTime
-		/ (pumpStand -> howManyPumps() * simulationTime));
-	printf ("%9.2f", TotalLitresSold * profit
-		- cost * pumpStand -> howManyPumps());*/
+	
+	printf ("%7.3f", TotalServiceTime / (numPumps * simulationTime));
+	
+	printf ("%9.2f", TotalLitresSold * profit - cost * numPumps);
+	
 	printf ("%7.2f\n", TotalLitresMissed * profit);
 }
 
@@ -186,19 +189,35 @@ void statsClass::snapshot ()
 
 extern "C" void sim() // Alice is the main process
 {	
-	int numP, numT;
-	cout << "Enter Pumps: ";
-	cin >> numP;
-	cout << "Enter Time: ";
-	cin >> numT;
 	
-	pumps = new facility_ms("pumps", numP);
+	cout << "Enter Number of Pumps: ";
+	cin >> numPumps;
+	cout << "Enter Total Run Time: ";
+	cin >> totalTime;
+	cout << "Enter Snapshot Interval: ";
+	cin >> snapshotInterval;
+	
+	pumps = new facility_ms("pumps", numPumps);
 	stats = new statsClass;
 	
 	create("sim"); 
+	
+	
+	
+	printf ("%9s%7s%8s%9s%8s%7s%9s%7s%8s%7s\n", " Current", "Total ",
+		"NoQueue", "Car->Car", "Average", "Number", "Average", "Pump ",
+		"Total", " Lost ");
+	printf ("%9s%7s%8s%9s%8s%7s%9s%7s%8s%7s\n", "   Time ", "Cars ",
+		"Fraction", "  Time  ", " Litres ", "Balked", "  Wait ",
+		"Usage ", "Profit", "Profit");
+	for (int i = 0; i < 79; i++)
+		cout << "-";
+	cout << "\n";
+	
+	
 	Generate(); 
 	
-	hold(numT);
+	hold(totalTime);
 	report();
 }
 
@@ -208,12 +227,21 @@ extern "C" void sim() // Alice is the main process
 
 
 void Generate()
-{
+{	
+	int simulationTime = 0;	
+	
 	create("Generate");
 	
 	while(1){
 		Car();
-		hold(interarrivalTime());
+		
+		if(simulationTime % snapshotInterval == 0) {
+			stats->snapshot();
+		}
+		
+		double nextTime = interarrivalTime();
+		hold(nextTime);
+		simulationTime += nextTime;
 	}
 }
 
@@ -227,6 +255,7 @@ void Generate()
 void Car()
 {
 	create("Car");
+
 	double litresNeeded = uniform(10, 60);
 	int len = pumps->qlength();
 	stats->countArrival();
@@ -237,8 +266,10 @@ void Car()
 		pumps->reserve();
 		
 		stats->accumSale(litresNeeded);
-		stats->accumServiceTime(serviceTime(litresNeeded));
-		hold(serviceTime(litresNeeded));		
+		
+		double t = serviceTime(litresNeeded);
+		stats->accumServiceTime(t);
+		hold(t);		
 
 		pumps->release();
 	}
