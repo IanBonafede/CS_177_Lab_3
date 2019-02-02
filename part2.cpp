@@ -243,7 +243,7 @@ void Generate()
 		if(simulationTime % snapshotInterval == 0) {
 			stats->snapshot();
 		}
-		
+		hold(1);
 		simulationTime++;
 	}
 }
